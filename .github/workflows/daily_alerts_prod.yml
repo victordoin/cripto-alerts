@@ -1,0 +1,31 @@
+name: Daily Alerts (Prod)
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # 9h BR (-3)
+  workflow_dispatch:
+    inputs:
+      group:
+        description: 'Grupo de assinantes (free, vip, premium)'
+        required: true
+        default: 'free'
+
+env:
+  ENV: prod
+  GROUP: ${{ github.event.inputs.group || 'free' }}
+  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN_PROD }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID_PROD }}
+
+jobs:
+  run-alerts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run script
+        run: python src/main.py
