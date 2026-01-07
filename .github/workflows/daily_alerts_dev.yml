@@ -1,8 +1,8 @@
 name: Daily Alerts (Dev)
 
 on:
-  schedule:
-    - cron: '0 21 * * *'  # 18h BR (-3)
+  # schedule:
+  #   - cron: '0 21 * * *'  # 18h BR (-3)
   workflow_dispatch:
     inputs:
       group:
